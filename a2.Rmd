@@ -1,0 +1,76 @@
+---
+title: "456A2"
+output:
+  html_document:
+    theme: cerulean
+    highlight: tango
+date: "2025-02-07"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r include=FALSE}
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(car)
+
+file_path <- "SvedkaData.xlsx" 
+svedka_data <- read_excel(file_path, sheet = 2)
+
+head(svedka_data)
+```
+
+# Question 6: Run a regression of LnSales on LnPrice and Ln(Total advertising expenditure). Report the R code and regression results. (10 points)
+
+```{r}
+
+svedka_data$TotalAdExpenditure <- svedka_data$Outdoor + svedka_data$Broad + svedka_data$Print
+svedka_data$LnTotalAdExpenditure <- log(svedka_data$TotalAdExpenditure)
+
+ln_model <- lm(LnSales ~ LnPrice + LnTotalAdExpenditure, data = svedka_data)
+summary(ln_model)
+
+```
+
+# Question 7: Interpret the coefficients of LnPrice and Ln(Total advertising expenditure) in the above regression in terms of price and advertising elasticities. (10 points)
+
+
+**LnPrice** (*-1.62582*): This means that a 1% increase in price leads to a ~1.63% decrease in total sales (since elasticity is negative). It also signifies that demand is elastic (since 1.63 > 1), which means that price changes significantly impact sales.
+
+**LnTotalAdExpenditure** (*0.27254*): This means that a 1% increase in total advertising expenditure leads to a ~0.27% increase in total sales. It also signifies that advertising has an inelastic effect on sales (since 0.27 < 1), which means that increased spending on ads has a smaller proportional effect on sales.
+
+* Demand for vodka is price-elastic.
+* Negative and significant price coefficient confirms that higher prices reduce sales.
+* Positive and significant advertising coefficient confirms that more advertising increases sales.
+
+
+# Question 8: Plot the residuals from the previous regression against the predicted values. Does the residual plot look satisfactory? If yes, why? If no, why not? (10 points)
+
+
+```{r}
+
+predicted_values <- fitted(ln_model)
+residuals <- resid(ln_model)
+
+ggplot(data = NULL, aes(x = predicted_values, y = residuals)) +
+  geom_point(alpha = 0.5) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(title = "Residuals vs Predicted Values",
+       x = "Predicted LnSales",
+       y = "Residuals") +
+  theme_minimal()
+
+
+```
+
+
+The residual plot does not look satisfactory. We can see uneven spread (spread of residuals is not consistent across different predicted values e.g. at lower predicted values (around 4-5) there are fewer points with more scatter but in the middle range there's a dense concentration of points which then leads to a wider spread once you reach 7/8). A random pattern inherent in the residual plot indicates heteroscedasticity (non-constant variance) in the residuals.For reference, a satisfactory residual plot should show random scatter, constant spread (points roughly symmetrically distributed around the zero line), and no obvious pattern/trend.
+
+
+
+
+
