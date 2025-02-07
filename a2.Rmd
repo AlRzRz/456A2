@@ -70,6 +70,27 @@ ggplot(data = NULL, aes(x = predicted_values, y = residuals)) +
 
 The residual plot does not look satisfactory. We can see uneven spread (spread of residuals is not consistent across different predicted values e.g. at lower predicted values (around 4-5) there are fewer points with more scatter but in the middle range there's a dense concentration of points which then leads to a wider spread once you reach 7/8). A random pattern inherent in the residual plot indicates heteroscedasticity (non-constant variance) in the residuals.For reference, a satisfactory residual plot should show random scatter, constant spread (points roughly symmetrically distributed around the zero line), and no obvious pattern/trend.
 
+# Question 9: If you are the brand manager of Svedka vodka, what independent variables would you add to the last regression to make it more useful? Explain your reasoning (20 points)
+
+
+**1. Lagged Sales (`LagTotalSales`)**:  
+   - Captures **brand loyalty and past performance trends**.  
+   - Sales in the previous year can strongly **predict current sales**.  
+   - Helps measure **momentum effects** in the market.
+
+**2. Market Share (`MarketShare`)**:  
+   - A brand’s **relative position in the market** influences sales.  
+   - Captures **brand strength and competitive standing**.  
+   - Helps determine if **higher market share leads to sustained sales growth**.
+   
+   
+**3. Price Sensitivity (`LagPrice`)**:  
+   - Consumers respond to **both current and past price changes**.  
+   - Helps analyze the **impact of price adjustments over time**.  
+   - A strong effect would indicate **price loyalty or switching behavior**.
+
+
+
 
 
 
